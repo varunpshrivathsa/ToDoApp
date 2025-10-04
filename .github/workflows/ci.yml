@@ -37,7 +37,7 @@ jobs:
 
       - name: Install backend deps & run tests
         run: |
-          cd backend
+          cd TODO/backend
           pip install -r requirements.txt
           pytest
 
@@ -50,13 +50,14 @@ jobs:
 
       - name: Install frontend deps & build
         run: |
-          cd frontend
+          cd TODO/frontend
           npm install
           npm run build
 
       # Docker (just to verify builds)
+
       - name: Build backend Docker image
-        run: docker build ./backend -t todo-backend:latest
+        run: docker build ./TODO/backend -t todo-backend:latest
 
       - name: Build frontend Docker image
-        run: docker build ./frontend -t todo-frontend:latest
+        run: docker build ./TODO/frontend -t todo-frontend:latest
