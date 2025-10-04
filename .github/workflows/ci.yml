@@ -25,11 +25,13 @@ jobs:
           --health-retries=5
 
     steps:
-      # Checkout code (no extra path nesting)
+      # Checkout repo
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # -------------------------
       # Backend
+      # -------------------------
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -37,12 +39,13 @@ jobs:
 
       - name: Install backend deps & run tests
         run: |
-          cd TODO/backend
+          cd backend
           pip install -r requirements.txt
           pytest
 
-
+      # -------------------------
       # Frontend
+      # -------------------------
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
@@ -50,14 +53,15 @@ jobs:
 
       - name: Install frontend deps & build
         run: |
-          cd TODO/frontend
+          cd frontend
           npm install
           npm run build
 
-      # Docker (just to verify builds)
-
+      # -------------------------
+      # Docker build check
+      # -------------------------
       - name: Build backend Docker image
-        run: docker build ./TODO/backend -t todo-backend:latest
+        run: docker build ./backend -t todo-backend:latest
 
       - name: Build frontend Docker image
-        run: docker build ./TODO/frontend -t todo-frontend:latest
+        run: docker build ./frontend -t todo-frontend:latest
