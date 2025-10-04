@@ -34,10 +34,11 @@ jobs:
           python-version: "3.12"
 
       - name: Install backend deps & run tests
+        working-directory: ./backend
         run: |
-          cd backend
           pip install -r requirements.txt
           pytest
+
 
       # Frontend (Node + build)
       - name: Set up Node
@@ -46,10 +47,11 @@ jobs:
           node-version: "20"
 
       - name: Install frontend deps & build
+        working-directory: ./frontend
         run: |
-          cd frontend
           npm install
           npm run build
+
 
       # Docker build (just to check Dockerfiles are valid)
       - name: Build backend Docker image
