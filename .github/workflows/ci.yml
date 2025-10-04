@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
+      db:
         image: postgres:15
         env:
           POSTGRES_USER: todo_user
@@ -25,6 +25,7 @@ jobs:
           --health-retries=5
 
     steps:
+      # Checkout repo
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -43,7 +44,7 @@ jobs:
       - name: Wait for Postgres
         run: |
           for i in {1..10}; do
-            if pg_isready -h postgres -p 5432 -U todo_user; then
+            if pg_isready -h db -p 5432 -U todo_user; then
               echo "Postgres is ready!"
               break
             fi
@@ -55,7 +56,7 @@ jobs:
         working-directory: backend
         run: alembic upgrade head
         env:
-          DATABASE_URL: postgresql://todo_user:secret@postgres:5432/todo_db
+          DATABASE_URL: postgresql://todo_user:secret@db:5432/todo_db
 
       - name: Run backend tests
         working-directory: backend
@@ -63,7 +64,9 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest
         env:
-          DATABASE_URL: postgresql://todo_user:secret@postgres:5432/todo_db
+          DATABASE_URL: postgresql://todo_user:secret@db:5432/todo_db
+
+
 
       # -------------------------
       # Frontend
