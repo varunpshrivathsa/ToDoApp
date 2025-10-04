@@ -25,10 +25,9 @@ jobs:
           --health-retries=5
 
     steps:
+      # Checkout code (no extra path nesting)
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          path: .
 
       # Backend
       - name: Set up Python
@@ -37,7 +36,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install backend deps & run tests
-        working-directory: ./ToDoApp/backend
+        working-directory: backend
         run: |
           pip install -r requirements.txt
           pytest
@@ -48,14 +47,13 @@ jobs:
         with:
           node-version: "20"
 
-
       - name: Install frontend deps & build
-        working-directory: ./ToDoApp/frontend
+        working-directory: frontend
         run: |
           npm install
           npm run build
 
-      # Docker
+      # Docker (just to verify builds)
       - name: Build backend Docker image
         run: docker build ./backend -t todo-backend:latest
 
