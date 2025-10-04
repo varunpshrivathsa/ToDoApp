@@ -46,11 +46,10 @@ jobs:
           cd backend
           alembic upgrade head
         env:
-          DATABASE_URL: postgresql://todo_user:secret@localhost:5432/todo_db
+          DATABASE_URL: postgresql://todo_user:secret@postgres:5432/todo_db
           POSTGRES_USER: todo_user
           POSTGRES_PASSWORD: secret
           POSTGRES_DB: todo_db
-
 
       - name: Run backend tests
         working-directory: backend
@@ -58,7 +57,7 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest
         env:
-          DATABASE_URL: postgresql://todo_user:secret@localhost:5432/todo_db
+          DATABASE_URL: postgresql://todo_user:secret@postgres:5432/todo_db
 
       # -------------------------
       # Frontend
