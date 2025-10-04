@@ -43,6 +43,9 @@ jobs:
           pip install -r requirements.txt
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest
+        env:
+          DATABASE_URL: postgresql://todo_user:secret@localhost:5432/todo_db
+
 
       # -------------------------
       # Frontend
