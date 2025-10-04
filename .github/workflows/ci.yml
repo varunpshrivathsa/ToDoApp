@@ -37,15 +37,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install backend deps & run tests
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Run Alembic migrations
+        working-directory: backend
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: postgresql://todo_user:secret@localhost:5432/todo_db
+
+      - name: Run backend tests
+        working-directory: backend
         run: |
-          cd backend
-          pip install -r requirements.txt
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest
         env:
           DATABASE_URL: postgresql://todo_user:secret@localhost:5432/todo_db
-
 
       # -------------------------
       # Frontend
@@ -56,8 +64,8 @@ jobs:
           node-version: "20"
 
       - name: Install frontend deps & build
+        working-directory: frontend
         run: |
-          cd frontend
           npm install
           npm run build
 
