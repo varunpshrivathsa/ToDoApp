@@ -1,1 +1,1 @@
-const FEATURE_ENABLED = false;
+const FEATURE_ENABLED = true;
